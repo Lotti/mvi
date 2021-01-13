@@ -1,0 +1,24 @@
+{
+  "name": "mvi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node -r dotenv/config index.js"
+  },
+  "author": "Valerio Riva <lotti86@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "canvas": "^2.6.1",
+    "color-hash": "^1.0.3",
+    "dotenv": "^8.2.0",
+    "fast-glob": "^3.2.4",
+    "form-data": "^3.0.0",
+    "fs-extra": "^9.0.1",
+    "jpeg-js": "^0.4.3",
+    "normalize-path": "^3.0.0",
+    "ora": "^5.2.0"
+  }
+}

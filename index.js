@@ -53,7 +53,7 @@ const main = async () => {
       await drawImage(path.join(PATH_CANVAS, `${fileName}.jpg`), buffer, predictions);
       spinner.text = `${file}: Done! ${counter}/${entries.length}`;
     } catch (error) {
-      console.error("error while detecting objects - waste", error);
+      console.error("error while detecting objects", error);
       process.exit(1);
     }
   }

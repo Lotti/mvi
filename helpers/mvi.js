@@ -44,9 +44,9 @@ module.exports.detect = async (filePath, buffer, labels = [], thresholdScore = 0
 
   const form = new formData();
   form.append('files', jpegData, {filepath: filePath});
-  form.append('containHeatMap', 'false');
-  form.append('containRle', 'false');
-  form.append('containPolygon', 'false');
+  form.append('containHeatMap', 'true');
+  form.append('containRle', 'true');
+  form.append('containPolygon', 'true');
   form.append('confthre', thresholdScore);
   form.append('clsnum', 0);
   form.append('waitForResults', 'true');
@@ -76,6 +76,7 @@ module.exports.detect = async (filePath, buffer, labels = [], thresholdScore = 0
             left: c.xmin,
             width: c.xmax - c.xmin,
             height: c.ymax - c.ymin,
+            polygons: c.polygons ? c.polygons.map((polygon) => polygon.map((p) => ({x: p[0], y: p[1]}))) : undefined
           },
           class: c.label, // deprecate.
           label: c.label,

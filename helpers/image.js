@@ -1,6 +1,7 @@
 const {createCanvas, loadImage} = require(`canvas`);
 const ColorHash = require(`color-hash`);
 const colorHash = new ColorHash();
+const alpha = 0.33;
 
 module.exports.decodeJPG = (file) => {
     return loadImage(file).then((image) => {
@@ -15,14 +16,33 @@ module.exports.decodeJPG = (file) => {
 const perc = (x) => Math.round(parseFloat(x) * 100);
 
 const drawBox = (ctx, label, bbox) => {
+    if (bbox.polygons && Array.isArray(bbox.polygons) && bbox.polygons.length > 0) {
+        for (const polygon of bbox.polygons) {
+            drawPolygon(ctx, label, polygon);
+        }
+    } else {
+        const color = colorHash.rgb(label);
+        ctx.beginPath();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
+        ctx.rect(bbox.left, bbox.top, bbox.width, bbox.height);
+        ctx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},${alpha})`;
+        // ctx.fillRect(bbox.left, bbox.top, bbox.width, bbox.height);
+        ctx.stroke();
+    }
+};
+
+const drawPolygon = (ctx, label, points) => {
     const color = colorHash.rgb(label);
-    ctx.beginPath();
-    ctx.lineWidth = 3;
     ctx.strokeStyle = `rgb(${color[0]},${color[1]},${color[2]})`;
-    ctx.rect(bbox.left, bbox.top, bbox.width, bbox.height);
-    ctx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},0.25)`;
-    // ctx.fillRect(bbox.left, bbox.top, bbox.width, bbox.height);
-    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},${alpha})`;
+    ctx.fill();
 };
 
 const drawLabel = (ctx, imageWidth, label, left, top, text) => {
